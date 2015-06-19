@@ -4,19 +4,27 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        'jsbeautifier': {
-            files: ['./**/*.js'],
-            options: {}
+        githooks: {
+            all: {
+                'pre-commit': 'jsbeautifier:git-pre-commit',
+            }
         },
-        'git-pre-commit': {
-            src: ['./**/*.js'],
-            options: {
-                mode: 'VERIFY_ONLY'
+
+        'jsbeautifier': {
+            'default': {
+                src: ['./**/*.js', '!./node_modules/**']
+            },
+            'git-pre-commit': {
+                src: ['./**/*.js', '!./node_modules/**'],
+                options: {
+                    mode: 'VERIFY_ONLY'
+                }
             }
         }
     });
 
-    grunt.loadNpmTasks("grunt-jsbeautifier");
+    grunt.loadNpmTasks('grunt-githooks');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
 
     // Default task(s).
     grunt.registerTask('default', ['jsbeautifier']);
