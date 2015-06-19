@@ -7,6 +7,12 @@ module.exports = function(grunt) {
         'jsbeautifier': {
             files: ['./**/*.js'],
             options: {}
+        },
+        'git-pre-commit': {
+            src: ['./**/*.js'],
+            options: {
+                mode: 'VERIFY_ONLY'
+            }
         }
     });
 
