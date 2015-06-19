@@ -65,10 +65,10 @@ function thing(name, model, implementation) {
 function register_proxy(uri, succeed, fail) {
     var options = url.parse(url.resolve(base_uri, uri));
     var base = url.parse(base_uri);
-    
+
     if ((options.hostname === base.hostname ||
-    		options.hostname === os.hostname()) &&
-    	options.port == base.port) {
+            options.hostname === os.hostname()) &&
+        options.port == base.port) {
         console.log('for this server so use local thing: ' + uri);
         var thing = registry[options.href];
 
@@ -79,8 +79,7 @@ function register_proxy(uri, succeed, fail) {
             console.log('waiting for ' + uri + ' to be created');
             record_handler(uri, succeed);
         }
-    }
-    else // assume remote host
+    } else // assume remote host
     {
         // remote host so find proxy
         console.log(options.href + " is another server");
@@ -94,7 +93,7 @@ function register_thing(model, thing) {
         model: model,
         thing: thing
     };
-    
+
     wsd.register_thing(thing);
 }
 
@@ -125,7 +124,7 @@ function launch_proxy(uri, succeed, fail) {
             }
         });
     });
-    
+
     request.on('error', function(err) {
         fail("couldn't load " + uri + ", error: " + err);
     });
@@ -207,7 +206,7 @@ function queue_act(thing, act, data) {
 
 function notify_dependents(dependee) {
     var dependents = pending[dependee._uri];
-    
+
     if (dependents) {
         console.log('resolving dependencies on ' + dependee._name);
         for (var i = 0; i < dependents.length; ++i) {
@@ -248,7 +247,7 @@ function record_dependency(dependent, property, dependee) {
     pending[dependee].push({
         property: property,
         dependent: dependent
-    });    
+    });
 }
 
 function resolve_dependency(thing, property, dependee, start) {
@@ -299,7 +298,7 @@ function init_dependencies(thing) {
                 var options = url.parse(uri);
                 if (options.hostname !== 'localhost') {
                     register_proxy(uri, function(dependee) {
-                        // nothing to do here
+                            // nothing to do here
                         },
                         function(err) {
                             console.log(err);
@@ -392,18 +391,18 @@ function init_properties(thing, ws) {
 
                 (function(property) {
                     Object.defineProperty(thing, property, {
-                        get: function () {
+                        get: function() {
                             return thing._values[property];
                         },
-                        
-                        set: function (value) {
+
+                        set: function(value) {
                             thing._values[property] = value;
                             var message = {
                                 uri: thing._uri,
                                 patch: property,
                                 data: value
                             };
-                            
+
                             ws.send(JSON.stringify(message));
                         }
                     });
@@ -417,23 +416,23 @@ function init_properties(thing, ws) {
                 thing._properties[prop] = null;
                 (function(property) {
                     Object.defineProperty(thing, property, {
-                        get: function () {
+                        get: function() {
                             return thing._values[property];
                         },
-                        
-                        set: function (value) {
+
+                        set: function(value) {
                             if (thing._running) {
                                 console.log("setting " + thing._name + "." + property + " = " + value);
                                 thing._values[property] = value;
                             } else
                                 queue_update(thing, property, value);
-                            
+
                             var message = {
                                 uri: thing._uri,
                                 patch: property,
                                 data: value
                             };
-                            
+
                             wsd.notify(message);
                         }
                     });
@@ -457,19 +456,19 @@ function init_actions(thing, ws) {
 
     if (ws) // proxied thing so pass to remote thing
     {
-        for (var act in actions) {            
+        for (var act in actions) {
             if (actions.hasOwnProperty(act)) {
-                (function (action) {
-                    thing[action] = function (data) {
+                (function(action) {
+                    thing[action] = function(data) {
                         var message = {
                             uri: thing._uri,
                             action: action,
                             data: data
                         };
-                        
+
                         ws.send(JSON.stringify(message));
                     };
-                
+
                 })(act);
             }
         }
@@ -478,13 +477,13 @@ function init_actions(thing, ws) {
         for (var act in actions) {
             if (actions.hasOwnProperty(act)) {
                 (function(action) {
-                    thing[action] = function (data) {
+                    thing[action] = function(data) {
                         if (thing._running) {
                             console.log('invoking action: ' + thing._name + '.' + action + '()');
                             thing._implementation[action](thing, data);
                         } else
                             queue_act(thing, action, data);
-                    }                    
+                    }
                 })(act);
             }
         }

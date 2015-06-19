@@ -21,7 +21,7 @@ describe('Thing with multiple properties should initialize correctly', function(
                 stop: function(thing) {},
             });
 
-            
+
 
         })
     })

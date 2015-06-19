@@ -159,10 +159,10 @@ var wot = {
 
                 (function(property) {
                     Object.defineProperty(thing, property, {
-                        get: function () {
+                        get: function() {
                             return thing._values[property];
                         },
-                        set: function (value) {
+                        set: function(value) {
                             // should throw error if property isn't writeable
                             console.log("setting " + property + " = " + value);
                             thing._values[property] = value;
@@ -171,7 +171,7 @@ var wot = {
                                 patch: property,
                                 data: value
                             };
-                            
+
                             wot.ws.send(JSON.stringify(message));
                         }
                     });
@@ -189,7 +189,7 @@ var wot = {
         for (var act in actions) {
             if (actions.hasOwnProperty(act)) {
                 (function(action) {
-                    thing[action] = function (data) {
+                    thing[action] = function(data) {
                         // invoke action on proxied thing
                         var message = {};
                         message.uri = thing._uri;

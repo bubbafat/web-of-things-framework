@@ -1,17 +1,18 @@
 {
   "name": "webofthings",
   "version": "0.0.1",
-  "scripts" : {
+  "scripts": {
     "start": "node demo.js",
     "test": "./node_modules/.bin/mocha"
   },
   "dependencies": {
     "ws": "latest"
-  }
-    ,
-    "devDependencies": {
-        "mocha": "latest",
-        "should":"latest"
-    },
-    "engine": "node >= 0.1.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-jsbeautifier": "^0.2.10",
+    "mocha": "latest",
+    "should": "latest"
+  },
+  "engine": "node >= 0.1.0"
 }
